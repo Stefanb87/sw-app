@@ -1,0 +1,54 @@
+<div class="content" role="main">
+  <h1>
+    Welcome!
+  </h1>
+
+  <app-drop-down [items]="cats" (onValueChange)="onCategorySelected($event)"></app-drop-down>
+
+  <app-search (onValueChange)="onSearch($event)"></app-search>
+
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Category</th>
+      <th scope="col">Created</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let swItem of allSWDataMapped; let i = index;">
+      <th scope="row">{{ i }}</th>
+      <td *ngIf="swItem.category !== 'films'; else filmTitle;" (click)="onViewDetails(swItem)">
+        {{ swItem.name }}
+      </td>
+      <ng-template #filmTitle>
+        <td (click)="onViewDetails(swItem)">
+          {{ swItem.title }}
+        </td>
+      </ng-template>
+      <td>{{ swItem.category}}</td>
+      <td>{{ swItem.created | date: 'dd/MM/yyyy' }}</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="d-flex justify-content-between p-2">
+    <ngb-pagination
+      [collectionSize]="collectionSize"
+      [(page)]="page"
+      [maxSize]="maxPageSize"
+      [pageSize]="pageSize"
+      [rotate]="true"
+      [boundaryLinks]="true"
+      (pageChange)="refreshItems()"
+    ></ngb-pagination>
+
+    <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshItems()">
+      <option [ngValue]="2">2 items per page</option>
+      <option [ngValue]="10">10 items per page</option>
+      <option [ngValue]="6">6 items per page</option>
+    </select>
+  </div>
+  <app-modal *ngIf="showModal" [dataToDisplay]="dataForModal" (onCloseModal)="onCloseModal($event)"></app-modal>
+</div>
