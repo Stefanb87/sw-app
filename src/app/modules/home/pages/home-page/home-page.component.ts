@@ -29,6 +29,7 @@ export class HomePageComponent implements OnInit {
   selectedCategory = 'all';
   dataToSearch: any[] = [];
   dataForModal: any;
+  modalHeaderText = 'Details';
   showModal = false;
 
   constructor(

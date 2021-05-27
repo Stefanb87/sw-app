@@ -1,19 +1,19 @@
-<!-- The Modal -->
 <div id="myModal" class="modal">
-
-  <!-- Modal content -->
   <div class="modal-content">
     <div class="modal-header">
       <span class="close" (click)="onClose()">&times;</span>
-      <h2>Modal Header</h2>
+      <h2>{{ headerText }}</h2>
     </div>
-    <div class="modal-body">
-      <p>Some text in the Modal Body</p>
-      <p>Some other text...</p>
-      <p>{{ dataToDisplay | json }}</p>
+    <div class="modal-body" (wheel)="onMouseenter($event)">
+      <div class="rows-holder">
+        <div class="item-row" *ngFor="let data of dataToDisplay">
+          <span>{{ data.key }}:</span>
+          <span>{{ data.value }}</span>
+        </div>
+      </div>
     </div>
     <div class="modal-footer">
-      <h3>Modal Footer</h3>
+      <button class="btn btn-primary" (click)="onClose()">Close</button>
     </div>
   </div>
 </div>
