@@ -61,17 +61,6 @@ export class HomePageComponent implements OnInit {
 
     if (!event) {
       this.onCategorySelected({ value: this.selectedCategory, selected: true });
-      // console.log("this.allSWData", this.allSWData)
-      // this.allSWDataToDisplay = [...this.allSWData];
-      // this.dataToSearch = [];
-      // this.collectionSize = this.allSWData.length;
-      // this.refreshTableItems();
-
-      // const filtered = this.allSWData.filter(item => item.category === this.selectedCategory);
-      // this.allSWDataToDisplay = [...filtered];
-      // this.collectionSize = filtered.length;
-      // this.dataToSearch = [];
-      // this.refreshTableItems();
       return;
     }
 
