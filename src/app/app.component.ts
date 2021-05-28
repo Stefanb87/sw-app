@@ -8,11 +8,11 @@ import { LoaderService } from './shared/components/loader/services/loader.servic
 })
 export class AppComponent implements OnInit {
   title = 'sw-app';
-  loading = true;
+  loading = false;
 
   constructor(private loaderService: LoaderService) { }
 
   ngOnInit() {
-    this.loaderService.loaderSubject.subscribe((loading: boolean) => this.loading = loading);
+    this.loaderService.loaderSubject.subscribe((loading: boolean) => setTimeout(() => {this.loading = loading}));
   }
 }

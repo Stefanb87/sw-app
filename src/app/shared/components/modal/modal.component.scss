@@ -38,7 +38,7 @@
   }
 
   .close {
-    color: darkgray;
+    color: white;
     float: right;
     font-size: 28px;
     font-weight: bold;
@@ -53,10 +53,9 @@
 
   .modal-header {
     display: block;
-    padding: 2px 16px;
-    margin: 0px 10px;
-    background-color: white;
-    color: darkgray;
+    padding: 2px 26px;
+    background-color: darkgray;
+    color: white;
     border-bottom: 1px solid darkgray;
 
     h2 {
@@ -90,5 +89,10 @@
     background-color: white;
     color: white;
     border-top: 1px solid darkgray;
+
+    .btn {
+      background-color: darkgray;
+      border: none;
+    }
   }
 }

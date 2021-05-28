@@ -11,7 +11,6 @@ import { AuthenticationService } from '../authentication/authentication.service'
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  loading = false;
   submitted = false;
 
   constructor(
@@ -40,17 +39,7 @@ export class LoginComponent implements OnInit {
         return;
     }
 
-    this.loading = true;
     this.authenticationService.login({ userName: this.f.username.value, password: this.f.password.value });
     this.router.navigate(['/']);
-        // .pipe(first())
-        // .subscribe(
-        //     data => {
-        //         this.router.navigate([this.returnUrl]);
-        //     },
-        //     error => {
-        //         this.alertService.error(error);
-        //         this.loading = false;
-        //     });
   }
 }

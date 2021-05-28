@@ -3,9 +3,14 @@
     Welcome!
   </h1>
 
-  <app-drop-down [items]="cats" (onValueChange)="onCategorySelected($event)"></app-drop-down>
-
-  <app-search (onValueChange)="onSearch($event)"></app-search>
+  <div class="filters-holder">
+    <div class="search-holder">
+      <app-search (onValueChange)="onSearch($event)"></app-search>
+    </div>
+    <div class="dd-holder">
+      <app-drop-down [items]="cats" (onValueChange)="onCategorySelected($event)"></app-drop-down>
+    </div>
+  </div>
 
   <table class="table table-striped">
     <thead>
@@ -17,7 +22,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let swItem of allSWDataMapped; let i = index;">
+    <tr *ngFor="let swItem of allSWDataMappedForTable; let i = index;">
       <th scope="row">{{ i }}</th>
       <td *ngIf="swItem.category !== 'films'; else filmTitle;" (click)="onViewDetails(swItem)">
         <span class="link">
@@ -37,7 +42,7 @@
     </tbody>
   </table>
 
-  <div class="d-flex justify-content-between p-2">
+  <div class="pagination d-flex justify-content-between p-2">
     <ngb-pagination
       [collectionSize]="collectionSize"
       [(page)]="page"
@@ -45,10 +50,10 @@
       [pageSize]="pageSize"
       [rotate]="true"
       [boundaryLinks]="true"
-      (pageChange)="refreshItems()"
+      (pageChange)="refreshTableItems()"
     ></ngb-pagination>
 
-    <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshItems()">
+    <select class="custom-select ml-2" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshTableItems()">
       <option [ngValue]="2">2 items per page</option>
       <option [ngValue]="10">10 items per page</option>
       <option [ngValue]="6">6 items per page</option>

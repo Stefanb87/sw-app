@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { HomePageService } from './service/home-page.service';
 import { baseUrl } from '../../../../../environments/environment';
 import { LoaderService } from 'src/app/shared/components/loader/services/loader.service';
+import { DropDownItem, SWItem } from './models/home-page.model';
 
 @Component({
   selector: 'app-home-page',
@@ -10,14 +11,16 @@ import { LoaderService } from 'src/app/shared/components/loader/services/loader.
   styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent implements OnInit {
+  allSWData: SWItem[];
+  allSWDataToDisplay: SWItem[];
+  allSWDataMappedForTable: SWItem[];
+
   collectionSize: number;
   page = 1;
   pageSize = 10;
   maxPageSize = 5;
-  allSWData: any[];
-  allSWDataToDisplay: any[];
-  allSWDataMapped: any[];
-  cats: any[] = [
+
+  cats: DropDownItem[] = [
     { value: 'all', selected: true },
     { value: 'people', selected: false },
     { value: 'planets', selected: false },
@@ -27,8 +30,10 @@ export class HomePageComponent implements OnInit {
     { value: 'starships', selected: false }
   ];
   selectedCategory = 'all';
+
   dataToSearch: any[] = [];
-  dataForModal: any;
+
+  dataForModal: SWItem;
   modalHeaderText = 'Details';
   showModal = false;
 
@@ -39,20 +44,13 @@ export class HomePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.homePageService.getAllItems(baseUrl);
-
-    this.homePageService.itemsSubject.pipe().subscribe((data: any[]) => {
-      data.forEach((item: any) => {
-        for (let prop in item) {
-          if (typeof item[prop] !== 'string') {
-            delete item[prop];
-          }
-        }
-      });
-      this.allSWData = data;
-      this.allSWDataToDisplay = data;
+    this.loaderService.loaderSubject.next(true);
+    this.homePageService.itemsSubject.subscribe((data: SWItem[]) => {
+      this.allSWData = [...data];
+      this.allSWDataToDisplay = [...data];
       this.collectionSize = data.length;
       this.loaderService.loaderSubject.next(false);
-      this.refreshItems();
+      this.refreshTableItems();
     });
   }
 
@@ -62,52 +60,51 @@ export class HomePageComponent implements OnInit {
     }
 
     if (!event) {
-      this.allSWDataToDisplay = [...this.allSWData];
-      this.dataToSearch = [];
-      this.collectionSize = this.allSWData.length;
-      this.refreshItems();
+      this.onCategorySelected({ value: this.selectedCategory, selected: true });
+      // console.log("this.allSWData", this.allSWData)
+      // this.allSWDataToDisplay = [...this.allSWData];
+      // this.dataToSearch = [];
+      // this.collectionSize = this.allSWData.length;
+      // this.refreshTableItems();
 
-      const filtered = this.allSWData.filter(item => item.category === this.selectedCategory);
-      this.allSWDataToDisplay = [...filtered];
-      this.collectionSize = filtered.length;
-      this.dataToSearch = [];
-      this.refreshItems();
+      // const filtered = this.allSWData.filter(item => item.category === this.selectedCategory);
+      // this.allSWDataToDisplay = [...filtered];
+      // this.collectionSize = filtered.length;
+      // this.dataToSearch = [];
+      // this.refreshTableItems();
       return;
     }
 
-    const res = this.dataToSearch.filter((obj: any) => JSON.stringify(obj).toLowerCase().includes(event.toLowerCase()));
-    this.allSWDataToDisplay = [...res];
-    this.collectionSize = res.length;
-    this.refreshItems();
-    console.log("res", res)
+    const filteredBySearch = this.dataToSearch.filter((obj: any) => JSON.stringify(obj).toLowerCase().includes(event.toLowerCase()));
+    this.allSWDataToDisplay = [...filteredBySearch];
+    this.collectionSize = filteredBySearch.length;
+    this.refreshTableItems();
   }
 
-  refreshItems() {
-    console.log("this.allSWDataToDisplay", this.allSWDataToDisplay)
-    this.allSWDataMapped = this.allSWDataToDisplay
+  refreshTableItems() {
+    this.allSWDataMappedForTable = this.allSWDataToDisplay
       .map((item: any, i: number) => ({id: i + 1, ...item}))
       .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
   }
 
-  onCategorySelected(event: any) {
+  onCategorySelected(event: DropDownItem) {
     this.selectedCategory = event.value;
+    this.dataToSearch = [];
 
     if (this.selectedCategory === 'all') {
       this.allSWDataToDisplay = [...this.allSWData];
       this.collectionSize = this.allSWData.length;
-      this.dataToSearch = [];
-      this.refreshItems();
+      this.refreshTableItems();
       return;
     }
 
-    const filtered = this.allSWData.filter(item => item.category === this.selectedCategory);
-    this.allSWDataToDisplay = [...filtered];
-    this.collectionSize = filtered.length;
-    this.dataToSearch = [];
-    this.refreshItems();
+    const filteredByCategory = this.allSWData.filter(item => item.category === this.selectedCategory);
+    this.allSWDataToDisplay = [...filteredByCategory];
+    this.collectionSize = filteredByCategory.length;
+    this.refreshTableItems();
   }
 
-  onViewDetails(data: any) {
+  onViewDetails(data: SWItem) {
     this.showModal = true;
     this.dataForModal = data;
   }

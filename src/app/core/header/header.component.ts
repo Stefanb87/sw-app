@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { DropDownItem } from 'src/app/modules/home/pages/home-page/models/home-page.model';
 
 import { AuthenticationService } from '../authentication/authentication.service';
 
@@ -10,7 +11,7 @@ import { AuthenticationService } from '../authentication/authentication.service'
 })
 export class HeaderComponent implements OnInit {
   currentUsername = '';
-  dropDownData: any[] = [
+  dropDownData: DropDownItem[] = [
     { value: '', selected: true },
     { value: 'Logout', selected: false }
   ];

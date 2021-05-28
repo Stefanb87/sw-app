@@ -7,9 +7,14 @@
     height: 60px;
     display: flex;
     align-items: center;
-    background-color: #1976d2;
+    background-color: darkgray;
     color: white;
     font-weight: 600;
+
+    .dd-holder {
+      margin-left: auto;
+      margin-right: 20px;
+    }
   }
 
   .toolbar img {

@@ -4,8 +4,8 @@
     alt="Star Wars Logo"
     src="../../../assets/sw_logo.png"
   />
-  <span>Welcome {{ currentUsername }}</span>
-  <div *ngIf="currentUsername">
+  <span *ngIf="currentUsername">Welcome {{ currentUsername }}!</span>
+  <div class="dd-holder" *ngIf="currentUsername">
     <app-drop-down [items]="dropDownData" (onValueChange)="onCategorySelected($event)"></app-drop-down>
   </div>
 </div>

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { DropDownItem } from 'src/app/modules/home/pages/home-page/models/home-page.model';
 import { DropDownService } from './services/drop-down.service';
 
 @Component({
@@ -7,8 +8,8 @@ import { DropDownService } from './services/drop-down.service';
   styleUrls: ['./drop-down.component.scss']
 })
 export class DropDownComponent implements OnInit {
-  @Input() items: any[];
-  @Output() onValueChange = new EventEmitter<string>();
+  @Input() items: DropDownItem[];
+  @Output() onValueChange = new EventEmitter<DropDownItem>();
 
   selectedValue: string;
 
@@ -29,12 +30,12 @@ export class DropDownComponent implements OnInit {
 
   onValueChanged(value: string) {
     this.setSelectedFlag(value);
-    const selectedValue = this.dropDownService.getSelectedValue(this.items);
+    const selectedValue: any = this.dropDownService.getSelectedValue(this.items);
     this.onValueChange.emit(selectedValue);
   }
 
   setSelectedFlag(selectedValue: string) {
-    this.items.map((item: any) => item.selected = item.value === selectedValue);
+    this.items.map((item: DropDownItem) => item.selected = item.value === selectedValue);
   }
 
 }
